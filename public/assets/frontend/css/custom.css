@@ -1,0 +1,28 @@
+
+.banner {
+    text-align: center;
+    background: #4b5563;
+}
+
+
+.logo {
+    text-align: center;
+    padding-top: 80px;
+    padding-left: 40px;
+    padding-right: 40px;
+
+}
+.logo img {
+    width: 100%;
+    max-width: 700px;
+}
+img {
+    overflow-clip-margin: content-box;
+    overflow: clip;
+}
+.logo {
+    text-align: center;
+    padding-top: 80px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
