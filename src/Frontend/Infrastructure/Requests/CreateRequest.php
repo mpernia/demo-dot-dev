@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Src\Shared\Infrastructure\Requests;
+namespace App\Src\Frontend\Infrastructure\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class CreateRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,8 +14,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'integer'],
-            'username' => ['required', 'string'],
+            'name' => ['required', 'string'],
             'email' => ['required', 'email'],
             'password' => ['required', 'string', 'min' => 8, 'max' => 12],
         ];

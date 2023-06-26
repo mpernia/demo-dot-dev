@@ -2,6 +2,7 @@
 
 namespace App\Src\Shared\Infrastructure\Providers;
 
+use App\Src\Frontend\Infrastructure\Commands\ChangePasswordCommand;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,7 +28,7 @@ class SourceServiceProvider extends ServiceProvider
 
 
         $this->commands([
-
+            ChangePasswordCommand::class
         ]);
     }
 

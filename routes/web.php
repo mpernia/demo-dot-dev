@@ -1,6 +1,5 @@
 <?php
 
-use App\Src\Frontend\Infrastructure\Controllers\LandingPageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::any('/', LandingPageController::class)->name('landing-page');
+
 
 
 /*

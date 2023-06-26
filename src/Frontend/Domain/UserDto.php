@@ -4,18 +4,23 @@ namespace App\Src\Frontend\Domain;
 
 class UserDto
 {
-    public function __construct(private string $password, private string $email, private ?string $username = null, private string $type = UserType::TEACHER)
+    public function __construct(
+        private string $password,
+        private string $email,
+        private ?string $name = null,
+        private string $type = UserType::TEACHER
+    )
     {
     }
 
-    public function getUsername() : string|null
+    public function getName() : string|null
     {
-        return $this->username;
+        return $this->name;
     }
 
-    public function setUsername(?string $username = null): static
+    public function setName(?string $name = null): static
     {
-        $this->username = $username;
+        $this->name = $name;
         return $this;
     }
 
@@ -28,6 +33,11 @@ class UserDto
     {
         $this->password = $password;
         return $this;
+    }
+
+    public function passwd() :string
+    {
+        return bcrypt($this->password);
     }
 
     public function getEmail(): string
@@ -43,7 +53,7 @@ class UserDto
 
     public function getType() : string
     {
-        $this->type;
+        return $this->type;
     }
 
     public function setType(string $type = UserType::TEACHER): static

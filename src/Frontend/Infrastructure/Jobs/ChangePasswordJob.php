@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Src\Shared\Infrastructure\Jobs;
+namespace App\Src\Frontend\Infrastructure\Jobs;
 
-use App\Src\Frontend\Application\PasswordUpdater;
+use App\Src\Frontend\Application\UserPasswordUpdater;
+use App\Src\Frontend\Domain\UserDto;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -13,15 +14,10 @@ class ChangePasswordJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct()
+    public function handle(UserDto $user, int $id): void
     {
-        //
-    }
+        $updater = new UserPasswordUpdater;
 
-    public function handle(array $data, int $id, string $type): void
-    {
-        $updater = new PasswordUpdater;
-
-        $updater($id, $data['password'], $data['email'], $type);
+        $updater($id, $user->getPassword(), $user->getType());
     }
 }
