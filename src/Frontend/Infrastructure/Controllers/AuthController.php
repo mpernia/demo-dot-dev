@@ -10,14 +10,15 @@ use App\Src\Frontend\Domain\UserDto;
 use App\Src\Frontend\Infrastructure\Requests\LoginRequestRequest;
 use App\Src\Frontend\Infrastructure\Requests\SigninRequestRequest;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function login(LoginRequestRequest $request, UserIdFinder $userIdFinder)
+    public function login(LoginRequestRequest $request, UserIdFinder $userIdFinder): RedirectResponse
     {
-        $type = $request->get('login_type');
-        $id = $userIdFinder->__invoke(email: $request->get('login_email'), type: $type);
+        $type = $request->get('select_type');
+        $id = $userIdFinder->__invoke(email: $request->get('email'), type: $type);
         if (is_null($id)) {
             return redirect()->route('landing-page');
         }
@@ -26,22 +27,22 @@ class AuthController extends Controller
             : redirect()->route('landing-page');
     }
 
-    public function logout(Request $request)
+    public function logout(Request $request): RedirectResponse
     {
         UserAuthenticator::logout($request);
         return redirect()->route('landing-page');
     }
 
-    public function signin(SigninRequestRequest $request, UserCreator $creator)
+    public function signin(SigninRequestRequest $request, UserCreator $creator): RedirectResponse
     {
-        $type = $request->get('signin_type');
+        $type = $request->get('select_type');
         try {
             $user = $creator(
                 new UserDto(
-                    password: $request->get('signin_password'),
-                    email: $request->get('signin_email'),
-                    name: $request->get('signin_name'),
-                    type: $request->get('signin_type')
+                    password: $request->get('password'),
+                    email: $request->get('email'),
+                    type: $type,
+                    name: $request->get('name')
                 )
             );
         } catch (Exception $e) {

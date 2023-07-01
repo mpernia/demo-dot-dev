@@ -37,6 +37,7 @@ class Authenticate
         if (
             !$this->validateFingerprint($request->session()->get('fingerprint'))
             || !$this->auth->guard($this->guard)->check()
+            || !$request->is(sprintf('%ss/*', $this->guard))
         ){
             $this->unauthenticated($request);
         }

@@ -19,13 +19,10 @@ class SourceServiceProvider extends ServiceProvider
         $migrationPath = $this->basePath('Database/migrations');
         $this->loadMigrationsFrom($migrationPath);
         $this->publishes([$migrationPath => database_path('migrations')], 'migrations');
-        $seederPath = $this->basePath('database/seeds');
-        $this->publishes([$seederPath => database_path('seeds')], 'seeds');
 
         $configPath = $this->basePath('Config/setting.php');
         $this->publishes([$configPath => config_path('setting.php')], 'config');
         $this->mergeConfigFrom($configPath, 'setting');
-
 
         $this->commands([
             ChangePasswordCommand::class

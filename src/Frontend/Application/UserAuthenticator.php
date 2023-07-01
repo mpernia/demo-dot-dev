@@ -24,7 +24,7 @@ class UserAuthenticator
             $credentials = self::credentials($request);
             $isLogged = Auth::guard($guard)->attempt(
                 credentials: $credentials,
-                remember: $request->boolean('login_remember')
+                remember: $request->boolean('remember')
             );
             if ($request->hasSession()) {
                 $request->session()->put('auth.password_confirmed_at', time());
@@ -73,18 +73,18 @@ class UserAuthenticator
     protected static function newUser(SigninRequestRequest $request) : UserDto
     {
         return new UserDto(
-            password: $request->get('signin_password'),
-            email: $request->get('signin_email'),
-            name: $request->get('signin_name'),
-            type: $request->get('signin_type')
+            password: $request->get('password'),
+            email: $request->get('email'),
+            type: $request->get('select_type'),
+            name: $request->get('name')
         );
     }
 
     protected static function credentials(LoginRequestRequest $request) : array
     {
         return [
-            'email'    => $request->get('login_email'),
-            'password' => $request->get('login_password')
+            'email'    => $request->get('email'),
+            'password' => $request->get('password')
         ];
     }
 }

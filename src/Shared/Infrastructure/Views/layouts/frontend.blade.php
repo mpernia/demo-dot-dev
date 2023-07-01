@@ -1,15 +1,13 @@
 @extends('layouts.app')
 
-@php
-    $guard = Session::get('guard')
-@endphp
-
 @section('styles')
     @parent
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+          crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/frontend/css/custom.css') }}">
 
     @yield('front_styles')
@@ -28,24 +26,36 @@
         </div>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
-                <a class="navbar-brand" href="#">DotDev</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" href="{{ route('landing-page') }}">DotDev</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+                        aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <ul class="navbar-nav mb-2 mb-md-0">
-                    @if (auth($guard)->user())
+                    @if (auth(Session::get('guard'))->user())
                         <li class="nav-item dropdown">
-                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                {{ auth($guard)->user()->name }}
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{ auth(Session::get('guard'))->user()->name }}
                             </a>
-
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#"
-                                   onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-                            </div>
+                            <ul class="dropdown-menu  dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="{{ route(sprintf('frontend.%s.show', Session::get('guard')), ['id' => auth(Session::get('guard'))->user()->id]) }}"
+                                    >Home</a>
+                                </li>
+                                <li><a class="dropdown-item"
+                                       href="{{ route(sprintf('frontend.%s.edit', Session::get('guard')), ['id' => auth(Session::get('guard'))->user()->id]) }}"
+                                    >Change Password</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="#"
+                                       onclick="event.preventDefault();
+                                       document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     @endif
                 </ul>
@@ -54,7 +64,9 @@
     </header>
 
     <main>
-        @yield('front_content')
+        <div class="container my-3 py-2">
+            @yield('front_content')
+        </div>
     </main>
 
     <footer class="footer mt-auto mt-5 bg-body-tertiary fixed-bottom">

@@ -11,36 +11,36 @@ use Illuminate\Support\Facades\Route;
 Route::any('/', LandingPageController::class)->name('landing-page');
 
 Route::group(['as' => 'auth.'], function () {
-    Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::post('signin', [AuthController::class, 'signin'])->name('signin');
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('logout', [AuthController::class, 'logout'])
+        ->name('logout');
 });
 
 Route::group(['as' => 'frontend.', 'middleware' => ['dotdev']], function () {
-    Route::group(['prefix' => 'teachers', 'as' => 'teacher'/*, 'middleware' => ['dotdev:teacher']*/], function () {
+    Route::group(['prefix' => 'teachers', 'as' => 'teacher'], function () {
         Route::get('/{id}', [TeacherController::class, 'show'])->name('.show');
-        Route::get('/{id}/edit', [TeacherController::class, 'show'])->name('.edit');
+        Route::get('/{id}/edit', [TeacherController::class, 'edit'])->name('.edit');
         Route::put('/{id}', [TeacherController::class, 'update'])->name('.update');
         Route::post('/{id}', [TeacherController::class, 'store'])->name('.store');
         Route::delete('/{id}', [TeacherController::class, 'destroy'])->name('.destroy');
     })->name('teachers');
 
-    Route::group(['prefix' => 'students', 'as' => 'student'/*, 'middleware' => ['dotdev:student']*/], function () {
+    Route::group(['prefix' => 'students', 'as' => 'student'], function () {
         Route::get('/{id}', [StudentController::class, 'show'])->name('.show');
-        Route::get('/{id}/edit', [StudentController::class, 'show'])->name('.edit');
+        Route::get('/{id}/edit', [StudentController::class, 'edit'])->name('.edit');
         Route::put('/{id}', [StudentController::class, 'update'])->name('.update');
         Route::post('/{id}', [StudentController::class, 'store'])->name('.store');
         Route::delete('/{id}', [StudentController::class, 'destroy'])->name('.destroy');
     })->name('students');
 
     Route::put('/{type}/{id}/change-password', ChangePasswordController::class)
-        //->middleware('dotdev')
         ->where('type', 'teachers|students')
         ->name('change-password');
 
-    /*Route::any('{type}', function () {
+    Route::any('{type}', function () {
         return redirect()->route('landing-page');
-    })->where('type', 'teachers|students');*/
+    })->where('type', 'teachers|students');
 
 });
 

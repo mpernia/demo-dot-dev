@@ -14,10 +14,14 @@ class ChangePasswordJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle(UserDto $user, int $id): void
+    public function __construct(private UserDto $user, private int $id)
+    {
+    }
+
+    public function handle(): bool
     {
         $updater = new UserPasswordUpdater;
 
-        $updater($id, $user->getPassword(), $user->getType());
+        return $updater($this->user, $this->id);
     }
 }

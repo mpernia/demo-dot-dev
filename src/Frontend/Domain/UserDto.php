@@ -7,8 +7,8 @@ class UserDto
     public function __construct(
         private string $password,
         private string $email,
-        private ?string $name = null,
-        private string $type = UserType::TEACHER
+        private string $type = UserType::TEACHER,
+        private ?string $name = null
     )
     {
     }

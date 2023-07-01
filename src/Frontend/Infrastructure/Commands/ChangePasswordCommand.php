@@ -2,9 +2,11 @@
 
 namespace App\Src\Frontend\Infrastructure\Commands;
 
+use App\Src\Frontend\Domain\UserDto;
 use App\Src\Frontend\Application\UserPasswordUpdater;
 use Exception;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class ChangePasswordCommand extends Command
 {
@@ -14,20 +16,22 @@ class ChangePasswordCommand extends Command
                             {--type= : The type of user, possible values are: teacher and student}';
     protected $description = 'Change the user password';
 
-    public function handle()
+    public function handle() : int
     {
         $id = $this->argument('id');
-        $password = $this->argument('password');
-        $type = $this->option('type');
-
+        $user = new UserDto(
+            password: $this->argument('password'),
+            email: 'user@example.com',
+            type: $this->argument('type')
+        );
         try {
             $updater = new UserPasswordUpdater;
-            $updater($id, $password, $type);
+            $updater($user, $id);
         } catch (Exception $exception) {
             $this->error("The change password was fail: \"{$exception->getMessage()}\".");
-            return Command::FAILURE;
+            return CommandAlias::FAILURE;
         }
         $this->info("The password was changed successfully.");
-        return Command::SUCCESS;
+        return CommandAlias::SUCCESS;
     }
 }
