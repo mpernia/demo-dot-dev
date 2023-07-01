@@ -5,8 +5,8 @@ namespace App\Src\Frontend\Application;
 use App\Src\Frontend\Application\UserCreator;
 use App\Src\Frontend\Domain\UserDto;
 use App\Src\Frontend\Domain\UserType;
-use App\Src\Frontend\Infrastructure\Requests\LoginRequestRequest;
-use App\Src\Frontend\Infrastructure\Requests\SigninRequestRequest;
+use App\Src\Frontend\Infrastructure\Requests\LoginRequest;
+use App\Src\Frontend\Infrastructure\Requests\SigninRequest;
 use App\Src\Shared\Infrastructure\Traits\FingerPrint;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
@@ -18,7 +18,7 @@ class UserAuthenticator
 {
     use FingerPrint;
 
-    public static function login(LoginRequestRequest $request, string $guard = UserType::TEACHER) : bool
+    public static function login(LoginRequest $request, string $guard = UserType::TEACHER) : bool
     {
         try {
             $credentials = self::credentials($request);
@@ -58,7 +58,7 @@ class UserAuthenticator
         }
     }
 
-    public static function register(SigninRequestRequest $request, string $guard = UserType::TEACHER) : void
+    public static function register(SigninRequest $request, string $guard = UserType::TEACHER) : void
     {
         $creator = new UserCreator;
         try {
@@ -70,7 +70,7 @@ class UserAuthenticator
         }
     }
 
-    protected static function newUser(SigninRequestRequest $request) : UserDto
+    protected static function newUser(SigninRequest $request) : UserDto
     {
         return new UserDto(
             password: $request->get('password'),
@@ -80,7 +80,7 @@ class UserAuthenticator
         );
     }
 
-    protected static function credentials(LoginRequestRequest $request) : array
+    protected static function credentials(LoginRequest $request) : array
     {
         return [
             'email'    => $request->get('email'),

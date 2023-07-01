@@ -7,15 +7,15 @@ use App\Src\Frontend\Application\UserAuthenticator;
 use App\Src\Frontend\Application\UserCreator;
 use App\Src\Frontend\Application\UserIdFinder;
 use App\Src\Frontend\Domain\UserDto;
-use App\Src\Frontend\Infrastructure\Requests\LoginRequestRequest;
-use App\Src\Frontend\Infrastructure\Requests\SigninRequestRequest;
+use App\Src\Frontend\Infrastructure\Requests\LoginRequest;
+use App\Src\Frontend\Infrastructure\Requests\SigninRequest;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function login(LoginRequestRequest $request, UserIdFinder $userIdFinder): RedirectResponse
+    public function login(LoginRequest $request, UserIdFinder $userIdFinder): RedirectResponse
     {
         $type = $request->get('select_type');
         $id = $userIdFinder->__invoke(email: $request->get('email'), type: $type);
@@ -33,7 +33,7 @@ class AuthController extends Controller
         return redirect()->route('landing-page');
     }
 
-    public function signin(SigninRequestRequest $request, UserCreator $creator): RedirectResponse
+    public function signin(SigninRequest $request, UserCreator $creator): RedirectResponse
     {
         $type = $request->get('select_type');
         try {
